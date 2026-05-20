@@ -4,6 +4,7 @@ import { Dumbbell, Calendar, Plus } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { WorkoutData, ExerciseData } from "@/types/workout";
+import { LogoutButton } from "@/components/LogoutButton";
 
 export default async function DashboardPage() {
     const res = await getWorkouts();
@@ -12,22 +13,28 @@ export default async function DashboardPage() {
     return (
         <main className="max-w-3xl mx-auto p-4 md:p-8 space-y-8">
             {/* Nagłówek i Szybkie Akcje */}
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                {/* Lewa strona: Tytuł i opis */}
                 <div>
+                    <div className="flex items-center gap-4">
                     <h1 className="text-3xl font-bold tracking-tight">
                         Twój Dashboard
                     </h1>
+                    <LogoutButton />
+                    </div>
                     <p className="text-muted-foreground mt-1">
-                        Przegląd Twoich ostatnich aktywności.
+                    Przegląd Twoich ostatnich aktywności.
                     </p>
                 </div>
-                <Link href="/workout/new">
-                    <Button>
-                        <Plus className="w-4 h-4 mr-2" />
-                        Nowy Trening
+
+                {/* Prawa strona: Przycisk (na mobilkach pełna szerokość) */}
+                <Link href="/workout/new" className="w-full md:w-auto">
+                    <Button className="w-full md:w-auto">
+                    <Plus className="w-4 h-4 mr-2" />
+                    Nowy Trening
                     </Button>
                 </Link>
-            </div>
+                </div>
 
             {/* Lista Treningów */}
             <div className="space-y-4">
