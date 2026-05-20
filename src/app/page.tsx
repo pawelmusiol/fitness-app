@@ -26,7 +26,7 @@ export default async function LandingPage() {
           <Button asChild size="lg" className="bg-white text-black hover:bg-gray-200">
             <Link href="/login">Zaloguj się</Link>
           </Button>
-          <Button asChild size="lg" variant="outline" className="border-zinc-700 text-gray-300 hover:bg-zinc-800">
+          <Button asChild size="lg" variant="outline" className="border-zinc-700 text-gray-800 hover:bg-zinc-800">
             <Link href="/register">Załóż konto</Link>
           </Button>
         </div>
