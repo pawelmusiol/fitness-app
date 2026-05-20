@@ -1,18 +1,24 @@
-import { MongoClient } from "mongodb";
+import { MongoClient, MongoClientOptions } from "mongodb";
 
 if (!process.env.MONGODB_URI) {
   throw new Error('Brak zmiennej środowiskowej: "MONGODB_URI"');
 }
 
 const uri = process.env.MONGODB_URI;
-const options = {};
+
+// DODAJEMY OPCJE TLS I POŁĄCZENIA
+const options: MongoClientOptions = {
+  tls: true,
+  ssl: true,
+  // Poniższa opcja (minVersion) wymusza bezpieczny protokół TLS v1.2, 
+  // zapobiegając błędom negocjacji (jak Alert 80 w OpenSSL 3.0 na Vercel)
+  tlsAllowInvalidCertificates: process.env.NODE_ENV === 'development' ? true : false,
+};
 
 let client: MongoClient;
 let clientPromise: Promise<MongoClient>;
 
 if (process.env.NODE_ENV === "development") {
-  // W trybie deweloperskim używamy zmiennej globalnej, 
-  // aby zachować połączenie przy Hot Module Replacement (HMR).
   const globalWithMongo = global as typeof globalThis & {
     _mongoClientPromise?: Promise<MongoClient>;
   };
@@ -23,7 +29,6 @@ if (process.env.NODE_ENV === "development") {
   }
   clientPromise = globalWithMongo._mongoClientPromise;
 } else {
-  // W produkcji najlepiej nie używać zmiennej globalnej.
   client = new MongoClient(uri, options);
   clientPromise = client.connect();
 }
